@@ -13,13 +13,13 @@ def game_to_prompt():
 def player_stats_to_prompt(player):
     prompt = " \t "
     prompt += player[1]['PLAYER_NAME']
-    
+
 
     min = player[1]['MIN']
-    if min != "None":
+    if min != None:
         prompt += f" played {min} minutes"
     else:
-        prompt += "not played"
+        prompt += f" not played ({player[1]['COMMENT']}) \n"
         return prompt
 
     points = player[1]['PTS']
@@ -53,7 +53,6 @@ if __name__ == "__main__":
 
     games = get_today_games()
 
-    print(games.line_score.get_data_frame())
     score_line = games.line_score.get_data_frame()
 
     scorebox = games.game_header.get_data_frame()

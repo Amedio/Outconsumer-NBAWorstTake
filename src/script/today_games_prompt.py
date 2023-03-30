@@ -11,7 +11,7 @@ def game_to_prompt():
 
 
 def player_stats_to_prompt(player):
-    prompt = ""
+    prompt = " \t "
     prompt += player[1]['PLAYER_NAME']
     
 
@@ -19,7 +19,7 @@ def player_stats_to_prompt(player):
     if min != "None":
         prompt += f" played {min} minutes"
     else:
-        prompt += " not played"
+        prompt += "not played"
         return prompt
 
     points = player[1]['PTS']
@@ -31,7 +31,9 @@ def player_stats_to_prompt(player):
     rebounds = player[1]['REB']
     if not(math.isnan(rebounds)):
         prompt += f" and {math.floor(player[1]['REB'])} rebounds " 
-    return prompt
+    else:
+        " "
+    return "    " + prompt + "\n"
 
 
 def get_today_games(): 
@@ -44,7 +46,7 @@ def get_today_games():
 
 
 def request_prompt():
-    return "Make an analyisis of the following game.In the style of a twitter dude and in less than 280 characters. talk in low IQ and make stupid assumptions don't point out more than 3 numerical stats. dont use a lot of number stats"
+    return "Make an analyisis of the following game.In the style of a twitter dude and in less than 280 characters. talk in low IQ and make stupid assumptions don't point out more than 3 numerical stats. dont use a lot of number stats."
 
 
 if __name__ == "__main__":
@@ -61,7 +63,7 @@ if __name__ == "__main__":
 
         prompt = request_prompt()
 
-        prompt += f"{score_line.iloc[i*2]['TEAM_CITY_NAME']}  {score_line.iloc[i*2]['PTS']} - {score_line.iloc[(i*2) + 1]['PTS']} {score_line.iloc[(i*2) + 1]['TEAM_CITY_NAME']}."
+        prompt += f"\n Final score: {score_line.iloc[i*2]['TEAM_CITY_NAME']}  {score_line.iloc[i*2]['PTS']} - {score_line.iloc[(i*2) + 1]['PTS']} {score_line.iloc[(i*2) + 1]['TEAM_CITY_NAME']}."
 
 
         scoreboard =  BoxScoreTraditionalV2(game['GAME_ID'])
@@ -74,11 +76,11 @@ if __name__ == "__main__":
 
 
             if player[0] == 0:
-                prompt += f" {f_team} played with the following players: "
+                prompt += f" \n \n {f_team} played with the following players: \n \n"
 
             if(player[1]["TEAM_CITY"] != f_team):
                 f_team = score_line.iloc[(i*2) + 1]['TEAM_CITY_NAME']
-                prompt += f" {f_team} played with the following players: "
+                prompt += f"  \n \n    {f_team} played with the following players: \n \n"
          
 
             team = player[1]["TEAM_CITY"]

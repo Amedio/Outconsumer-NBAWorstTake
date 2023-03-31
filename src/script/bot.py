@@ -1,6 +1,11 @@
+import os
 import tweepy
 import openai
-from nba_api.stats.endpoints import BoxScoreTraditionalV2
+from dotenv import load_dotenv
+
+import today_games_prompt
+
+load_dotenv()
 
 # Credenciales de la API de Twitter
 consumer_key = 'TU_CONSUMER_KEY'
@@ -16,23 +21,12 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 # Credenciales de la API de OpenAI
-openai.api_key = 'TU_API_KEY_DE_OPENAI'
-
-# Obtener datos del partido
-game_id = 'GAME_ID_DEL_PARTIDO'
-box_score = BoxScoreTraditionalV2(game_id=game_id)
-data = box_score.get_normalized_dict()
-
-# Analizar los datos del partido
-home_team = data['basicGameData']['hTeam']['triCode']
-home_score = data['basicGameData']['hTeam']['score']
-away_team = data['basicGameData']['vTeam']['triCode']
-away_score = data['basicGameData']['vTeam']['score']
-top_scorer = data['stats'][0]['leadingScorer']['fullName']
-top_scorer_pts = data['stats'][0]['leadingScorer']['points']
+openai.api_key = os.getenv('OPENAI_API_KEY')
 
 # Generar el resumen del partido utilizando GPT-3
-prompt = f"Genera un resumen del partido entre {home_team} y {away_team} en el que {top_scorer} anotó {top_scorer_pts} puntos."
+prompt = today_games_prompt.request_prompt()
+
+print(prompt)
 response = openai.Completion.create(
     engine="text-davinci-002",
     prompt=prompt,

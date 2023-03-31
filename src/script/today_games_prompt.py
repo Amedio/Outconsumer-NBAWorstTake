@@ -46,10 +46,6 @@ def get_today_games():
 
 
 def request_prompt():
-    return "Make an analyisis of the following game.In the style of a twitter dude and in less than 280 characters. talk in low IQ and make stupid assumptions don't point out more than 3 numerical stats. dont use a lot of number stats."
-
-
-if __name__ == "__main__":
 
     games = get_today_games()
 
@@ -60,7 +56,7 @@ if __name__ == "__main__":
     for i, game in scorebox.iterrows():
 
 
-        prompt = request_prompt()
+        prompt = "Make an analyisis of the following game.In the style of a twitter dude and in less than 280 characters. talk in low IQ and make stupid assumptions don't point out more than 3 numerical stats. dont use a lot of number stats."
 
         prompt += f"\n Final score: {score_line.iloc[i*2]['TEAM_CITY_NAME']}  {score_line.iloc[i*2]['PTS']} - {score_line.iloc[(i*2) + 1]['PTS']} {score_line.iloc[(i*2) + 1]['TEAM_CITY_NAME']}."
 
@@ -85,6 +81,7 @@ if __name__ == "__main__":
             team = player[1]["TEAM_CITY"]
             prompt += player_stats_to_prompt(player)
         prompt += ""
-        print(f"\n {prompt} \n")
+        # print(f"\n {prompt} \n")
+        return prompt
 
       

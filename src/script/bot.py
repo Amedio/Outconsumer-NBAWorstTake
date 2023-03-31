@@ -28,7 +28,7 @@ prompt = today_games_prompt.request_prompt()
 
 print(prompt)
 response = openai.Completion.create(
-    engine="gpt-3.5-turbo",
+    model="gpt-3.5-turbo",
     prompt=prompt,
     max_tokens=1000,
     n=1,

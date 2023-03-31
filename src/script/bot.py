@@ -38,5 +38,7 @@ response = openai.Completion.create(
 
 summary = response.choices[0].text
 
+print(summary)
+
 # Publicar el resumen del partido en Twitter
-api.update_status(summary)
+# api.update_status(summary)

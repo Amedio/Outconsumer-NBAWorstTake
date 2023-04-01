@@ -27,16 +27,16 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 prompt = today_games_prompt.request_prompt()
 
 print(prompt)
-response = openai.Completion.create(
+response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
-    prompt=prompt,
+    messages=[{'role': 'user', 'content': prompt}],
     max_tokens=1000,
     n=1,
     stop=None,
     temperature=0.7,
 )
 
-summary = response.choices[0].text
+summary = response.choices[0].message.content
 
 print(summary)
 

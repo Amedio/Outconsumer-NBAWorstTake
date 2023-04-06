@@ -19,6 +19,19 @@ Los archivos [nba_prompts.py](blob/kings-league/src/script/nba_prompts.py) y [kl
 
 El prompt se elige de manera aleatoria entre los posibles.
 
+## Requisitos
+
+El bot utiliza python3 (debería funcionar cualquier versión de Python 3.6 o superior.
+                        
+Los paquetes usados fuera de la libería estándar son:
+
+* openai
+* pandas
+* nba_api
+* tweepy
+* bs4
+* python-dotenv
+
 ## Configuración
 
 Los bots requiren crear un archive de entorno (.env) en el directorio raíz del proyecto con las claves y secretos necesarias de OpenAI, Twitter (y opcionalmente, Discord):
@@ -32,4 +45,39 @@ En el archivo [.env.example](blob/kings-league/.env.example) se puede ver un eje
 
 ## Ejecución
 
-*TODO*
+
+### Inicialización
+
+La primera ejecución require inicializar la base de datos y crear las tablas usadas en la misma. Esto crea un pequeño fichero (nba.db o kings_league.db, dependiendo del tipo de bot) en el sistema de archivos local:
+
+```
+python3 bot.py <bot> initialize
+```
+
+Donde bot es "nba" o "kings_leage".
+
+Esto evita que comienze a twittear a partir de fuentes de información antiguas (las marca como ya tweeteadas).
+
+Si todo funciona correctamente, la inicialización terminará y ya está listo para uso.
+
+### Uso normal
+
+Una vez tenemos inicializada la base de datos, para ejecutar, simplemente hacemos:
+    
+
+```
+python3 bot.py <bot>
+```
+
+Por ejemplo, para ejecutar el bot de la NBA (usando la api y prompts de la NBA), haríamos:
+
+```
+python3 bot.py nba
+```
+
+y para el de la Kings League (usando el diario Marca como fuente):
+
+```
+python3 bot.py kings_league
+```
+

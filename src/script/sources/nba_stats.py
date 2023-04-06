@@ -1,9 +1,12 @@
+from datetime import datetime
 import sys
 from time import sleep
 
-#from pprint import pprint
+# from pprint import pprint
 from nba_api.stats.endpoints import Scoreboard, BoxScoreTraditionalV2
 from nba_api.stats.static import teams
+
+import source
 
 
 class nba_stats:
@@ -29,36 +32,60 @@ class nba_stats:
         }
 
     def get_last_finished_games(self):
-        """Return the last games finished within the last 10 days"""
+        """Return the last games finished within the last 3 days"""
         game_list = []
-        for offset in range(0, -10, -1):
+        for offset in range(0, -3, -1):
             scoreboard = Scoreboard(day_offset=offset, headers=self.custom_headers)
+            sleep(1)
             games = scoreboard.get_normalized_dict().get('GameHeader')
             for game in games:
                 # pprint(game)
                 if game.get('GAME_STATUS_ID') != 3:
                     continue
                 game_list.append(game)
-            if len(game_list) > 0:
-                break
         return game_list
+    
+    def search_game(self, game_id):
+        """get the game basics stats for the given game_id happening withing the last 3 days"""
+        for offset in range(0, -3, -1):
+            scoreboard = Scoreboard(day_offset=offset, headers=self.custom_headers)
+            games = scoreboard.get_normalized_dict().get('GameHeader')
+            for game in games:
+                # pprint(game)
+                if game.get('GAME_ID') == game_id:
+                    return game
+            sleep(1)
+        return None
+
+    def get_sources(self):
+        """Returns a list of sources from the last finished games"""
+        games = self.get_last_finished_games()
+        sources = []
+        for game in games:
+            sources.append(source.source(id=game['GAME_ID'], method='nba_api', date=datetime.now()))
+        return sources
+
+    def get_game_details(self, game_id):
+        """provides details of the given game id"""
+        score = BoxScoreTraditionalV2(game_id=game_id, headers=self.custom_headers)
+        sleep(1)
+        game = self.search_game(game_id)
+        home_team = teams.find_team_name_by_id(game['HOME_TEAM_ID'])
+        visitor_team = teams.find_team_name_by_id(game['VISITOR_TEAM_ID'])
+        return {'basic_info': game, 'home_team': home_team, 'visitor_team': visitor_team,
+                'stats': score.get_normalized_dict()}
 
     def get_game_list_details(self, game_list):
         # retrieve game stats
         games = []
         for game in game_list:
             sleep(1)
-            games.append(self.get_game_details(game))
+            game_details = self.get_game_details(game['GAME_ID'])
+            if game_details['stats']['TeamStats'][0]['PTS'] is None or \
+               game_details['stats']['TeamStats'][1]['PTS'] is None:
+                continue  # Ignore finished games with no detail statistics
+            games.append(game_details)
         return games
-
-    def get_game_details(self, game):
-        """provides details of the given game id"""
-        game_id = game.get('GAME_ID')
-        score = BoxScoreTraditionalV2(game_id=game_id, headers=self.custom_headers)
-        home_team = teams.find_team_name_by_id(game['HOME_TEAM_ID'])
-        visitor_team = teams.find_team_name_by_id(game['VISITOR_TEAM_ID'])
-        return {'basic_info': game, 'home_team': home_team, 'visitor_team': visitor_team,
-                'stats': score.get_normalized_dict()}
 
     def normalize_number(self, number):
         """convert sometimes float numbers into integers"""
@@ -93,6 +120,7 @@ class nba_stats:
         assists = self.normalize_number(player['AST'])
         steals = self.normalize_number(player['STL'])
         turnovers = self.normalize_number(player['TO'])
+        threes = self.normalize_number(player['FG3M'])
 
         if minutes_played is None:
             return f"\t{player_name} ({nick}) didn't play ({comment})."
@@ -101,6 +129,8 @@ class nba_stats:
         # only add these stats if not zero
         text += self.pluralize(steals, "steal")
         text += self.pluralize(turnovers, "turnover")
+        text += self.pluralize(threes, "three")
+
         return text
 
     def create_players_summary(self, team, player_stats):
@@ -165,6 +195,14 @@ The game was played in {game_location}.
 {visitor_team} played with the following players:
 {visitor_players_summary}"""
         return text
+
+    def generate_prompt(self, s):
+        """
+        Given a source s containing as identifier a game_id, query the game details
+        and return a text summary of it to be used as a prompt
+        """
+        game_details = self.get_game_details(s.id)
+        return self.create_game_summary(game_details)
 
     def print_game_data(self, game):
         home_pts, _ = self.create_team_summary(game['stats']['TeamStats'], game['home_team']['id'])

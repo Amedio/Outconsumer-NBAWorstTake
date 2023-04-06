@@ -1,9 +1,11 @@
 import os
 
+from pprint import pprint
+
 from ai import ai
-from nba_stats import nba_stats
+from sources.nba_stats import nba_stats
 from twitter import twitter
-from nba_prompts import basic_prompts
+from prompts.nba_prompts import basic_prompts
 
 
 def main():
@@ -25,7 +27,7 @@ def main():
     for game in game_stats:
         #pprint(game)
         game_summary = nba.create_game_summary(game)
-        print(game_summary)
+        #print(game_summary)
         tweets = nba_ai.generate_text_from_chat(custom_prompt=game_summary)
         #print()
         print()

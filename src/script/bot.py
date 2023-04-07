@@ -5,7 +5,7 @@ from time import sleep
 
 from pprint import pprint
 from ai import ai
-from twitter import twitter
+import twitter
 import prompts.kl_prompts
 import prompts.nba_prompts
 from db_tracking import db_tracking as tracking
@@ -21,6 +21,15 @@ class bot:
         sys.exit(0)
 
 
+    def get_methods(self, type):
+        """return the prompt sourcing methods for each bot type"""
+        if type == 'kings_league':
+            return ['marca', 'as', 'sport', 'twitter']
+        elif type == 'nba':
+            return ['nba_api']
+        else:
+            return []
+
     def __init__(self, type):
         """
         Setup the name/type of the bot, and the method used to get
@@ -29,17 +38,21 @@ class bot:
         self.type = type
         if self.type == 'kings_league':
             self.twitter_account = "estaPasandoKL"
-            self.method = 'marca'
         elif self.type == 'nba':
             self.twitter_account = "TheNBAWorstTake"
-            self.method = 'nba_api'
         else:
             print("The bot type must be either kings_league or nba", file=sys.stderr)
             sys.exit(1)
 
+        self.methods = self.get_methods(type)
         self.tracking = tracking(self.type)
         self.ai = None
 
+    def get_sources(self):
+        sources = []
+        for method in self.methods:
+            sources.extend(source.read_sources(method))
+        return sources
 
     def initialize(self):
         # make sure basic infra is setup
@@ -47,14 +60,12 @@ class bot:
 
         # set previous news and other sources as sent to
         # prevent duplicates
-        sources = source.read_sources(self.type)
-        print(sources)
+        sources = self.get_sources()
         for info in sources:
             self.tracking.track_source(info)
             self.tracking.set_sent(info)
 
         return 0
-
 
     def get_next_new_source(self):
         """
@@ -62,13 +73,12 @@ class bot:
         that has not been already sent. If none are found or all have
         already been sent, return None
         """
-        sources = source.read_sources(self.type)
+        sources = self.get_sources()
         for s in sources:
             self.tracking.track_source(s)
             if not self.tracking.is_sent(s):
                 return s
         return None
-
 
     def monitor(self):
         """
@@ -78,11 +88,10 @@ class bot:
         signal.signal(signal.SIGINT, bot.signal_handler)
 
         # setup twitter
-        twitterer = twitter()
-        twitterer.authenticate()
+        twitterer = twitter.twitter()
 
         # setup AI
-        if self.method == 'nba_api':  # TODO: get basic_prompts and config from db
+        if self.type == 'nba':  # TODO: get basic_prompts and config from db
             basic_prompts = prompts.nba_prompts.basic_prompts
         else:
             basic_prompts = prompts.kl_prompts.basic_prompts

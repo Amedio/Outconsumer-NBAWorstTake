@@ -1,24 +1,38 @@
 import sys
 
+import sources.as_news
+import sources.kingsleague_twitter
 import sources.marca_news
 import sources.nba_stats
+import sources.sport_news
+
 
 class source:
     """An abstract representation of a source used to generate a prompt"""
     @staticmethod
-    def read_sources(type):
+    def get_source_factory(method):
+        if method == "marca":
+            return sources.marca_news.marca_news()
+        elif method == "as":
+            return sources.as_news.as_news()
+        elif method == "sport":
+            return sources.sport_news.sport_news()
+        elif method == "twitter":
+            return sources.kingsleague_twitter.kingsleague_twitter()
+        elif method == "nba_api":
+            return sources.nba_stats.nba_stats()
+        return None
+        
+    @staticmethod
+    def read_sources(method):
         """
         returns a list of source objects with at least an id with available
         information sources
         """
-        if type == "kings_league":
-            mn = sources.marca_news.marca_news()
-            return mn.get_sources()
-        elif type == "nba":
-            nba_api = sources.nba_stats.nba_stats()
-            return nba_api.get_sources()
-        else:
+        factory = source.get_source_factory(method)
+        if factory is None:
             return []
+        return factory.get_sources()
 
     def __init__(self, id, method, date=None, sent=False, prompt=None, tweets=None):
         """Constructor"""
@@ -44,10 +58,7 @@ class source:
 
     def get_prompt(self):
         """returns a generated text prompt for the current source"""
-        if self.method == "marca":
-            mn = sources.marca_news.marca_news()
-            self.prompt = mn.generate_prompt(self)
-        elif self.method == "nba_api":
-            nba_api = sources.nba_stats.nba_stats()
-            return nba_api.generate_prompt(self)
-        return self.prompt
+        factory = source.get_source_factory(self.method)
+        if factory is None:
+            return None
+        return factory.generate_prompt(self)

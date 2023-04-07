@@ -5,7 +5,21 @@ from dotenv import load_dotenv
 from pprint import pprint
 
 
+def singleton(cls):
+    obj = cls()
+    # Always return the same object
+    cls.__new__ = staticmethod(lambda cls: obj)
+    # Disable __init__
+    try:
+        del cls.__init__
+    except AttributeError:
+        pass
+    return cls
+
+
+@singleton
 class twitter:
+    
     def __init__(self):
         load_dotenv()
         # Credenciales de la API de Twitter
@@ -13,6 +27,7 @@ class twitter:
         self.api_secret = os.getenv('TWITTER_API_KEY_SECRET')
         self.access_token = os.getenv('TWITTER_ACCESS_TOKEN')
         self.access_token_secret = os.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+        self.authenticate()
 
     def authenticate(self):
         # Autenticación de Twitter
@@ -20,6 +35,22 @@ class twitter:
                                     consumer_secret=self.api_secret,
                                     access_token=self.access_token,
                                     access_token_secret=self.access_token_secret)
+        self.authenticated = True
+
+    def get_tweets(self, account):
+        """Returns the latest 20 tweets from a given account"""
+        response = self.client.get_user(username=account, user_auth=True)
+        user_id = response.data['id']
+        response = self.client.get_users_tweets(user_id, max_results=20, user_auth=True)
+        tweet_ids = []
+        for data in response.data:
+            tweet_ids.append(data[id])
+        return tweet_ids
+    
+    def get_tweet(self, tweet_id):
+        """returns the text of a tweet by its given id"""
+        response = self.client2.get_tweet(tweet_id)
+        return response.data['text']
 
     def send(self, tweet, reply_to=None):
         """Publicar un tweet en Twitter"""

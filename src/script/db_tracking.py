@@ -10,7 +10,7 @@ class db_tracking:
 
     def __init__(self, name):
         self.name = name
-        self.interval_time = 5 * 60
+        self.interval_time = 20 * 60
 
     def initialize(self):
         db_file = self.name + ".db"

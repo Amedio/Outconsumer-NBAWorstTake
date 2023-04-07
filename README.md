@@ -23,7 +23,7 @@ El prompt se elige de manera aleatoria entre los posibles.
 
 El bot utiliza python3 (debería funcionar cualquier versión de Python 3.6 o superior.
                         
-Los paquetes usados fuera de la libería estándar son:
+Los paquetes usados fuera de la librería estándar son:
 
 * openai
 * pandas
@@ -31,6 +31,7 @@ Los paquetes usados fuera de la libería estándar son:
 * tweepy
 * bs4
 * python-dotenv
+* snscrape
 
 ## Configuración
 
@@ -81,3 +82,4 @@ y para el de la Kings League (usando el diario Marca como fuente):
 python3 bot.py kings_league
 ```
 
+Para finalizar el proceso, usa Ctrl+C, o mande una señal SIGINT.

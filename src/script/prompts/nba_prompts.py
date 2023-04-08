@@ -87,6 +87,29 @@ You are a regular angry NBA fan on Twitter. Write a short, bold and exaggerated 
     {"text":
 """
 You are a regular angry NBA fan on Twitter. Write a short, bold and exaggerated tweet making stupid assumptions with the following information. Make a joke with the names of the players.
+
+
+""",
+    'weight': 1},
+    {"text":
+"""
+Write a short and sarcastic tweet with the following information as you hate one of the teams involved.
+
+
+""",
+    'weight': 1},
+    {"text":
+"""
+You are a regular low IQ angry NBA fan. Write a short, bold and exaggerated tweet using only video game analogies with the following information.
+
+
+""",
+    'weight': 1},
+    {"text":
+"""
+Draw stupid and exaggerated conclusions out of the following information and write a short tweet about it.
+
+
 """,
     'weight': 1}
 ]

@@ -58,12 +58,12 @@ class twitter:
         pprint(response)
         return response
 
-    def create_thread(self, tweets):
+    def create_thread(self, tweets, in_replay_to=None):
         """
         Crear un hilo con tantos tweets como textos se enviens en la lista de entrada.
         Devolver la respuesta del primer tweet publicado.
         """
-        previous_tweet = None
+        previous_tweet = in_replay_to
         first_response = None
         for tweet in tweets:
             response = self.send(tweet, reply_to=previous_tweet)

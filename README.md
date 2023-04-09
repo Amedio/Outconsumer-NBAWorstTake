@@ -83,3 +83,25 @@ python3 bot.py kings_league
 ```
 
 Para finalizar el proceso, usa Ctrl+C, o mande una señal SIGINT.
+
+### Responder a un tweet particular
+
+Para que el bot responda a un tweet en particular, se puede usar
+el script `reply_tweet.py` de esta manera:
+
+```
+python3 reply_tweet.py <bot> <tweet>
+```
+
+donde bot es nba o kings_league (personalidad básica) y tweet es
+la URL de un tweet o su "tweet id" (por ejemplo:
+
+```
+python3 reply_tweet.py nba https://twitter.com/jack/status/20
+```
+
+or
+
+```
+python3 reply_tweet.py kings_league 18081110810427392
+```

@@ -1,0 +1,17 @@
+[Unit]
+Description=NBA bot that publishes tweets automatically
+Documentation=https://github.com/Amedio/Outconsumer-NBAWorstTake/tree/kings-league
+
+[Service]
+Restart=on-failure
+User=nba_bot
+EnvironmentFile=/etc/default/nba-bot
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=autodeploy
+WorkingDirectory=/home/nba_bot
+ExecStart=/usr/bin/python3 /home/nba_bot/Outconsumer-NBAWorstTake/src/script/bot.py nba
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target

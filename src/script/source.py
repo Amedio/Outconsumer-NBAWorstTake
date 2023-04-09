@@ -5,7 +5,7 @@ import sources.kingsleague_twitter
 import sources.marca_news
 import sources.nba_stats
 import sources.sport_news
-
+import sources.relevo_news
 
 class source:
     """An abstract representation of a source used to generate a prompt"""
@@ -17,6 +17,8 @@ class source:
             return sources.as_news.as_news()
         elif method == "sport":
             return sources.sport_news.sport_news()
+        elif method == "relevo":
+            return sources.relevo_news.relevo_news()
         elif method == "twitter":
             return sources.kingsleague_twitter.kingsleague_twitter()
         elif method == "nba_api":

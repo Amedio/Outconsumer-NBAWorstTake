@@ -24,7 +24,7 @@ class bot:
     def get_methods(self, type):
         """return the prompt sourcing methods for each bot type"""
         if type == 'kings_league':
-            return ['marca', 'as', 'sport', 'twitter']
+            return ['marca', 'as', 'sport', 'relevo', 'twitter']
         elif type == 'nba':
             return ['nba_api']
         else:

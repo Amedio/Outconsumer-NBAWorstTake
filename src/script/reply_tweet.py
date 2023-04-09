@@ -39,7 +39,7 @@ def reply_tweet(type, tweet):
 
     # call AI
     tweets = my_ai.generate_text_from_chat(custom_prompt=prompt)
-            
+
     # tweet text
     print(f"Sending tweets: {tweets}")
 

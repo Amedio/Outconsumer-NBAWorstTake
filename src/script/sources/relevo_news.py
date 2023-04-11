@@ -1,4 +1,5 @@
 from datetime import datetime
+import socket
 from time import sleep
 from urllib.request import urlopen, urlparse, Request
 from urllib.error import URLError
@@ -21,7 +22,10 @@ class relevo_news:
         Get a list of kings leage related news with url as the id. Returns a
         list of non-duplicate source objects
         """
-        html = urlopen(Request(self.kl_url))
+        try:
+            html = urlopen(Request(self.kl_url))
+        except socket.gaierror as HostNotFound:
+            return []
         sleep(1)  # artificial wait to prevent getting banned from the website
         soap = BeautifulSoup(html, 'html.parser')
         links = []

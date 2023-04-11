@@ -80,6 +80,11 @@ class bot:
                 return s
         return None
 
+    def go_to_sleep(self):
+        """go to sleep"""
+        print(f"Sleeping for {self.tracking.interval_time} seconds")
+        sleep(self.tracking.interval_time)
+
     def monitor(self):
         """
         Prepare twitter and OpenAI apis, and then monitor in an infinite loop
@@ -106,7 +111,11 @@ class bot:
                 self.tracking.track_source(info)
 
                 # generate prompt
-                self.tracking.add_prompt(info, info.get_prompt())
+                prompt = info.get_prompt()
+                if prompt is None or prompt == "":
+                    self.go_to_sleep()
+                    continue
+                self.tracking.add_prompt(info, prompt)
                 print(f"Using prompt: {info.prompt}")
 
                 # call AI
@@ -124,10 +133,7 @@ class bot:
                 # track as done
                 self.tracking.set_sent(info)
 
-            # go to sleep
-            print(f"Sleeping for {self.tracking.interval_time} seconds")
-            sleep(self.tracking.interval_time)
-
+            self.go_to_sleep()
 
 def main():
     if len(sys.argv) <= 1:

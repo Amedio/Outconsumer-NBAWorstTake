@@ -21,7 +21,10 @@ class as_news:
         Get a list of kings leage related news with url as the id. Returns a
         list of non-duplicate source objects
         """
-        html = urlopen(Request(self.kl_url))
+        try:
+            html = urlopen(Request(self.kl_url))
+        except socket.gaierror as ex:
+            return []
         sleep(1)  # artificial wait to prevent getting banned from the website
         soap = BeautifulSoup(html, 'html.parser')
         links = []
@@ -56,7 +59,7 @@ class as_news:
             header_length = len(title) + len(subtitle) + 6
             for p in paragraphs:
                 text = p.text.strip()
-                if (header_length + len(body) + len(text)) > prompt_max_length:
+                if (header_length + len(body) + len(text)) > self.prompt_max_length:
                     break
                 body += ("\n\n " + text)
         prompt = f"Reacciona a la siguiente noticia:\n\n{title}\n\n{subtitle}\n\n{body}"

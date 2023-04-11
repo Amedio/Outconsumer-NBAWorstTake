@@ -24,7 +24,7 @@ class relevo_news:
         """
         try:
             html = urlopen(Request(self.kl_url))
-        except socket.gaierror as HostNotFound:
+        except Exception as ex:
             return []
         sleep(1)  # artificial wait to prevent getting banned from the website
         soap = BeautifulSoup(html, 'html.parser')
@@ -43,7 +43,10 @@ class relevo_news:
         """
         Given a news shource s, with at least an id (url), return a string with a text prompt
         """
-        html = urlopen(Request(s.id))
+        try:
+            html = urlopen(Request(s.id))
+        except Exception as ex:
+            return ""
         sleep(1)  # artificial wait to prevent getting banned from the website
         soap = BeautifulSoup(html, 'html.parser')
         title = soap.find('h1').text.strip()

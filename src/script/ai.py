@@ -54,7 +54,7 @@ class ai:
 
         return tweets
 
-    def generate_text_from_chat(self, custom_prompt):
+    def generate_text_from_chat(self, custom_prompt, postfix=""):
         # combine static and dynamic parts of the prompt
         basic_prompt = self.basic_prompt
         full_prompt = basic_prompt + custom_prompt
@@ -69,7 +69,9 @@ class ai:
         )
 
         # split in a thread, if needed
-        text = response.choices[0].message.content.strip('"')
+        text = response.choices[0].message.content.strip('"') + postfix
+        if len(postfix) > 0 and text.startswith('@'):  # do not @ when quoting
+            text = '.' + text
         tweets = self.split_into_tweets(text)
 
         return tweets

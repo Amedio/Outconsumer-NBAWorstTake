@@ -9,7 +9,7 @@ import prompts.kl_prompts
 import prompts.nba_prompts
 
 
-def reply_tweet(type, tweet):
+def reply_tweet(type, tweet, mention='reply'):
     # setup twitter
     twitterer = twitter.twitter()
 
@@ -33,27 +33,43 @@ def reply_tweet(type, tweet):
     for original_tweet in sntwitter.TwitterTweetScraper(tweetId=original_tweet_id).get_items():
         tweet_text = original_tweet.rawContent
         tweet_author = original_tweet.user.username
-        prompt = f"Responde al siguiente tweet, referenciando al autor (@{tweet_author}):\n\n{tweet_text}"
+        if mention == "reply":
+            prompt = f"Responde al siguiente tweet, referenciando al autor (@{tweet_author}):\n\n{tweet_text}"
+        else:
+            prompt = f"Cita el siguiente tweet dando tu respuesta en contestación a @{tweet_author}):\n\n{tweet_text}"
         break
     print(prompt)
 
     # call AI
-    tweets = my_ai.generate_text_from_chat(custom_prompt=prompt)
+    
+    if mention == 'quote':
+        postfix = f' https://twitter.com/{tweet_author}/status/{original_tweet_id}'
+    else:
+        postfix = ""
+    tweets = my_ai.generate_text_from_chat(custom_prompt=prompt, postfix=postfix)
 
     # tweet text
     print(f"Sending tweets: {tweets}")
 
-    response = twitterer.create_thread(tweets, in_replay_to=original_tweet_id)
+    if mention == 'reply':
+        in_replay_to = original_tweet_id
+    else:
+        in_replay_to = None
+    response = twitterer.create_thread(tweets, in_replay_to=in_replay_to)
     tweet_id = response.data['id']
     print(f"https://twitter.com/{twitter_account}/status/{tweet_id}")
     if len(response.errors) > 0:
         print(response.errors)
 
+
 def main():
-    if len(sys.argv) != 3:
+    if len(sys.argv) < 3:
         print("replying to a tweet requires 2 compulsory parameters: the type of bot (kings_league or nba) and the tweet url or id", file=sys.stderr)
         sys.exit(1)
-    reply_tweet(sys.argv[1], sys.argv[2])
+    if sys.argv[1] == '--quote':  # FIXME: use argparse
+        reply_tweet(sys.argv[2], sys.argv[3], mention='quote')
+    else:
+        reply_tweet(sys.argv[1], sys.argv[2])
 
 
 if __name__ == "__main__":

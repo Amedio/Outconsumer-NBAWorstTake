@@ -47,7 +47,10 @@ class as_news:
         soap = BeautifulSoup(html, 'html.parser')
         title = soap.find('h1').text.strip()
         subtitle = soap.find('h2').text.strip()
-        paragraphs = soap.find('div', class_='mce-body').findAll('p')
+        article = soap.find('div', class_='mce-body')
+        paragraphs = []
+        if article is not None:
+            paragraphs = article.findAll('p')
         body = ""
         if paragraphs is not None:
             header_length = len(title) + len(subtitle) + 6
@@ -57,6 +60,4 @@ class as_news:
                     break
                 body += ("\n\n " + text)
         prompt = f"Reacciona a la siguiente noticia:\n\n{title}\n\n{subtitle}\n\n{body}"
-        print(prompt)
-        sys.exit(0)
         return prompt

@@ -26,7 +26,7 @@ class bot:
         if type == 'kings_league':
             return ['marca', 'as', 'sport', 'relevo', 'twitter']
         elif type == 'nba':
-            return ['nba_api']
+            return ['espn_stats']
         else:
             return []
 

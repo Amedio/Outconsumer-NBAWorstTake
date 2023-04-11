@@ -1,6 +1,7 @@
 import sys
 
 import sources.as_news
+import sources.espn_stats
 import sources.kingsleague_twitter
 import sources.marca_news
 import sources.nba_stats
@@ -21,6 +22,8 @@ class source:
             return sources.relevo_news.relevo_news()
         elif method == "twitter":
             return sources.kingsleague_twitter.kingsleague_twitter()
+        elif method == "espn_stats":
+            return sources.espn_stats.espn_stats()
         elif method == "nba_api":
             return sources.nba_stats.nba_stats()
         return None

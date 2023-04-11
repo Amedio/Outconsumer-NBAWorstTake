@@ -5,6 +5,8 @@ import random
 import openai
 from dotenv import load_dotenv
 from textwrap import wrap
+import twitter
+
 
 class ai:
     """Generates a prompt and a text summary from certain imput data"""
@@ -38,7 +40,7 @@ class ai:
                               k=1)[0]
 
     def split_into_tweets(self, text):
-        text_size = len(text)
+        text_size = twitter.twitter.tweet_size(text)
         if text_size > self.max_tweet_size:
             # cut the tweet in several ones of max length tweet_split_size, but more or less
             # balanced (so the last one is not super-short)

@@ -19,7 +19,18 @@ def singleton(cls):
 
 @singleton
 class twitter:
-    
+
+    @staticmethod
+    def tweet_size(tweet):
+        """
+        Twitter doesn't use a standard algorithm to check for tweet size.
+        See: https://developer.twitter.com/en/docs/counting-characters
+        and
+        https://github.com/nottrobin/tweet-counter/blob/main/tweet_counter/__init__.py
+        We will do an approximation, good enough to avoid errors.
+        """
+        return len(tweet.encode('utf-8'))
+
     def __init__(self):
         load_dotenv()
         # Credenciales de la API de Twitter

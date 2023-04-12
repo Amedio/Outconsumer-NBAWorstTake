@@ -29,7 +29,7 @@ def reply_tweet(type, tweet, mention='reply'):
         sys.exit(1)
     original_tweet_id = response.group(0)
 
-    prompt = None
+    prompt = ""
     for original_tweet in sntwitter.TwitterTweetScraper(tweetId=original_tweet_id).get_items():
         tweet_text = original_tweet.rawContent
         tweet_author = original_tweet.user.username

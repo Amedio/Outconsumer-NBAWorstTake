@@ -162,10 +162,10 @@ The game was played at {venue}.
 {away_team_summary}
 {home_team_summary}
 
-{home_team} played with the following players:
+{away_team} played with the following players:
 {away_team_players_summary}
 
-{away_team} played with the following players:
+{home_team} played with the following players:
 {home_team_players_summary}
 
 {winning_team} won!

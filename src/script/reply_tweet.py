@@ -23,13 +23,14 @@ def reply_tweet(type, tweet, mention='reply'):
     my_ai = ai(basic_prompts=basic_prompts)
 
     # get tweet
-    response = re.search(r'[0-9]+', str(tweet))
+    response = re.search(r'[0-9]+/?$', str(tweet))
     if response is None:
         print("Tweet id not found", file=sys.stderr)
         sys.exit(1)
     original_tweet_id = response.group(0)
 
     prompt = ""
+    tweet_author = ""
     for original_tweet in sntwitter.TwitterTweetScraper(tweetId=original_tweet_id).get_items():
         tweet_text = original_tweet.rawContent
         tweet_author = original_tweet.user.username

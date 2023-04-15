@@ -24,6 +24,8 @@ class source:
             return sources.kingsleague_twitter.kingsleague_twitter()
         elif method == "espn_stats":
             return sources.espn_stats.espn_stats()
+        elif method == "espn_recap":
+            return sources.espn_recap.espn_recap()
         elif method == "nba_api":
             return sources.nba_stats.nba_stats()
         return None

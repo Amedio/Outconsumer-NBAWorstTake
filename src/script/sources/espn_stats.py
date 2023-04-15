@@ -13,7 +13,7 @@ class espn_stats:
 
     standings = None
 
-    def __init__(self):
+    def __init__(self, return_format='id'):
         self.custom_headers = {
             'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
                            'AppleWebKit/537.36 (KHTML, like Gecko) '
@@ -24,8 +24,9 @@ class espn_stats:
             'Pragma': 'no-cache',
             'Cache-Control': 'no-cache'
         }
+        self.return_format = return_format
 
-    def get_games_dated(self, a_date):
+    def get_events(self, a_date):
         """Return the last games finished within the last 3 days"""
         d = a_date.strftime("%Y%m%d")
         url = f"http://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates={d}"
@@ -34,10 +35,19 @@ class espn_stats:
         json_url = urlopen(request)
         data = json.loads(json_url.read())
         sleep(1)
+        return data
+
+    def get_games_dated(self, a_date):
+        """Return the last games finished within the last 3 days"""
+        data = self.get_events(a_date)
+        sleep(1)
         games = []
         for event in data['events']:
             if event['status']['type']['completed']:  # skip scheduled or live games
-                games.append(event['id'])
+                if self.return_format == 'id':
+                    games.append(event['id'])
+                else:
+                    games.append(event)
         return games
 
     def get_last_finished_games(self, days=3):

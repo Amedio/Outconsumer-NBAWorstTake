@@ -7,6 +7,7 @@ import sources.marca_news
 import sources.nba_stats
 import sources.sport_news
 import sources.relevo_news
+import sources.espn_recap
 
 class source:
     """An abstract representation of a source used to generate a prompt"""

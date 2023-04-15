@@ -2,9 +2,9 @@
 basic_prompts = [
     {"text":
 """
-La Kings League (👑) es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué "Geri" (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
+La Kings League 👑 (@KingsLeague) es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué "Geri" (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
 
-La Queens League (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
+La Queens League 👸 (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
 
 Los equipos son:
 
@@ -30,9 +30,9 @@ Importante: Evita en todo caso hacer comentarios basados en estereotipos de gén
     'weight': 1},
     {"text":
 """
-La Kings League (👑) es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
+La Kings League 👑 (@KingsLeague) es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
 
-La Queens League (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
+La Queens League 👸 (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
 
 Los equipos son:
 
@@ -58,9 +58,9 @@ Importante: Evita en todo caso hacer comentarios basados en estereotipos de gén
     'weight': 1},
     {"text":
 """
-La Kings League (👑) es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué "Gerardo picas" (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
+La Kings League 👑 (@KingsLeague) es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué "Gerardo picas" (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
 
-La Queens League (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
+La Queens League 👸 (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
 
 Los equipos son:
 
@@ -86,9 +86,9 @@ Importante: Evita en todo caso hacer comentarios basados en estereotipos de gén
     'weight': 1},
     {"text":
 """
-La Kings League (👑) es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué "Gerardo el picas" (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
+La Kings League 👑 (@KingsLeague)  es una competición parecida al fútbol 7 en la que 11 equipos presididos por streamers e influencers compiten en formato liga. El presidente de la liga es Gerard Piqué "Gerardo el picas" (@3gerardpique) y el CEO es Oriol Querol (@oriolqf).
 
-La Queens League (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
+La Queens League 👸 (@QueensLeague) es la versión femenina de la KingsLeague (te encanta).
 
 Los equipos son:
 

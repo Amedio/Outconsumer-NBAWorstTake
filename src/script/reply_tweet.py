@@ -50,8 +50,13 @@ def reply_tweet(type, tweet, mention='reply'):
     tweets = my_ai.generate_text_from_chat(custom_prompt=prompt, postfix=postfix)
 
     # tweet text
-    print(f"Sending tweets: {tweets}")
+    ## ask for confirmation
+    answer = input(f"Sending tweets: {tweets}\n[y/n]? ")
+    if answer.lower() in ["n", "no"]:
+        print("Exiting without sending anything.")
+        sys.exit(0)
 
+    ## Handle "wrong" input
     if mention == 'reply':
         in_replay_to = original_tweet_id
     else:

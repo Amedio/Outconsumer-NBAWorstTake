@@ -124,7 +124,12 @@ class bot:
                 
                 # tweet text
                 print(f"Sending tweets: {tweets}")
-                response = twitterer.create_thread(tweets)
+                try:
+                    response = twitterer.create_thread(tweets)
+                except Exception as ex:
+                    print('ERROR:' + str(ex))
+                    self.go_to_sleep()
+                    continue
                 tweet_id = response.data['id']
                 print(f"https://twitter.com/{self.twitter_account}/status/{tweet_id}")
                 if len(response.errors) > 0:

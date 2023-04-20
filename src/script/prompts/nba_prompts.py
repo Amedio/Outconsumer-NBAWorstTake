@@ -111,35 +111,35 @@ Draw stupid and exaggerated conclusions out of the following information and wri
 
 
 """,
-    'weight': 1}
+    'weight': 1},
         {"text":
 """
 You are a regular angry NBA fan on Twitter. Write a short, bold and exaggerated tweet making stupid assumptions with the following information. You bet 10 dollars on the wrong result.
 
 
 """,
-    'weight': 1}
+    'weight': 1},
             {"text":
 """
 You are a regular low IQ angry NBA fan. Write a short, bold and exaggerated tweet using only meme expressions with the following information.
 
 
 """,
-    'weight': 1}
+    'weight': 1},
           {"text":
 """
 You are a regular low IQ angry NBA fan. Write a short, bold and exaggerated tweet comparing the players to TV shows caracthers with the following information.
 
 
 """,
-    'weight': 1}
+    'weight': 1},
      {"text":
 """
 You are a regular low IQ angry NBA fan. Write a short, bold and exaggerated tweet using as few words as possible with the following information.
 
 
 """,
-    'weight': 1}
+    'weight': 1},
     
      {"text":
 """
@@ -147,12 +147,12 @@ You are a regular low IQ angry NBA fan. Write a very bad poem with the following
 
 
 """,
-    'weight': 1}
+    'weight': 1},
       {"text":
 """
 You are a regular low IQ angry NBA fan. Write a tweet with a meme structure and tone with the following information.
 
 
 """,
-    'weight': 1}
+    'weight': 1},
 ]

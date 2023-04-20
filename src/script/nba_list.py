@@ -1,6 +1,5 @@
 from ai import ai
-from sources.espn_stats import espn_stats
-from sources.espn_recap import espn_recap
+import sources.espn_recap
 from twitter import twitter
 from prompts.nba_prompts import basic_prompts
 #from pprint import pprint
@@ -14,7 +13,7 @@ def main():
     twitterer.authenticate()
 
     # get list of last day finished games
-    nba = espn_recap()
+    nba = sources.espn_recap.espn_recap()
     game_recaps = nba.get_sources()
     
     nba_ai = ai(basic_prompts=basic_prompts)

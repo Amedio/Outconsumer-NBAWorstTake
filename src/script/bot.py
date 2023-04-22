@@ -113,6 +113,8 @@ class bot:
                 # generate prompt
                 prompt = info.get_prompt()
                 if prompt is None or prompt == "":
+                    print(f"ERROR: {info} didn't return a meaningful prompt")
+                    self.tracking.add_error(info)
                     self.go_to_sleep()
                     continue
                 self.tracking.add_prompt(info, prompt)

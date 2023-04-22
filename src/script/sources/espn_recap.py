@@ -1,7 +1,7 @@
 from datetime import datetime
 from time import sleep
 from urllib.request import urlopen, urlparse, Request
-from urllib.error import URLError
+from urllib.error import URLError, HTTPError, ContentTooShortError
 
 from bs4 import BeautifulSoup
 
@@ -36,10 +36,17 @@ class espn_recap:
         """
         Given a news shource s, with at least an id (url), return a string with a text prompt
         """
-        html = urlopen(Request(s.id))
+        try:
+            html = urlopen(Request(s.id))
+        except (URLError, HTTPError, ContentTooShortError) as e:
+            print(e)
+            return None
         sleep(1)  # artificial wait to prevent getting banned from the website
         soap = BeautifulSoup(html, 'html.parser')
-        title = soap.find('h1').text.strip()
+        h1 = soap.find('h1')
+        if h1 is None:
+            return None
+        title = h1.text.strip()
         subtitle = ""
         article = soap.find('div', class_='Story__Body')
         paragraphs = []

@@ -1,13 +1,13 @@
 import sys
 
 import sources.as_news
+import sources.espn_recap
 import sources.espn_stats
 import sources.kingsleague_twitter
 import sources.marca_news
 import sources.nba_stats
 import sources.sport_news
 import sources.relevo_news
-import sources.espn_recap
 
 class source:
     """An abstract representation of a source used to generate a prompt"""

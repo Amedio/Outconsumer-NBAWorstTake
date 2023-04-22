@@ -4,7 +4,6 @@ import sys
 from time import sleep
 from urllib.request import urlopen, Request
 
-from pprint import pprint
 import source
 
 
@@ -83,22 +82,11 @@ class espn_stats:
             games.append(game_details)
         return games
 
-    def normalize_number(self, number):
-        """convert sometimes float numbers into integers"""
-        if number is None or type(number) == int:
-            return number
-        return int(float(number))
-
-    def normalize_time(self, time):
-        """convert sometimes float minutes into mm:ss format"""
-        if time is None or ':' not in time:
-            return time
-        time_split = time.split(':')
-        return (str(self.normalize_number(time_split[0])) + ':' +
-                ':'.join([str(self.normalize_number(x)).zfill(2) for x in time_split[1:]]))
-
     def pluralize(self, stat, singular_name):
-        stat = int(stat)
+        try:
+            stat = int(stat)
+        except ValueError as ex:
+            return f" {stat} {singular_name}s."
         if stat == 0:
             return ""
         if stat == 1:
@@ -149,6 +137,18 @@ class espn_stats:
                  f"did {totals['assists']} assists and {totals['steals']} steals. "
                  f"Game turnovers: {totals['turnovers']}."))
 
+    def create_playoff_summary(self, game):
+        """
+        Returns the ongoing playoff score, if it is being played at the moment.
+        """
+        if not game.get('seasonseries') or len(game['seasonseries']) == 0:
+            return ""
+        for series in game['seasonseries']:
+            if series.get('type') is None or series['type'] != 'playoff':
+                continue
+            return f"{datetime.now().year} playoff status: {series.get('summary')}"
+        return ""
+
     def create_game_summary(self, game):
         """Generate a human-readable text summary for a given game"""
         away_team = game['boxscore']['teams'][0]['team']['displayName']
@@ -161,6 +161,7 @@ class espn_stats:
         home_team_pts, home_team_summary = self.create_team_summary(home_team, home_team_stats)
         home_team_players_summary = self.create_players_summary(home_team_stats)
         winning_team = away_team if away_team_pts > home_team_pts else home_team
+        playoff_stats = self.create_playoff_summary(game)
 
         text = f"""
 The final score was:
@@ -178,7 +179,8 @@ The game was played at {venue}.
 {home_team} played with the following players:
 {home_team_players_summary}
 
-{winning_team} won!
+{winning_team} won the game!
+{playoff_stats}
 """
         return text
 
